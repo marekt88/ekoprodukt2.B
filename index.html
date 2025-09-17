@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Testovacia stranka AI hlasového agenta — Voice Widget</title>
+</head>
+<body>
+  <h1 style="text-align:center; margin-top:20px;">Testovacia stranka AI hlasového agenta</h1>
+  <p style="text-align:center;">Vyskúšajte hlasového agenta.</p>
+
+  <!-- Voice Widget Snippet from Vapi docs -->
+  <script>
+    var vapiInstance = null;
+    const assistant = "d50e9d1a-8adf-4087-97f0-68165be05918";  // replace with your assistant ID
+    const apiKey = "8b5f180a-38eb-4798-af3e-ba8c1320df25";       // replace with your public API key
+    const buttonConfig = {
+      // Optional customizations:
+      position: "bottom-right",
+      button: {
+        // styling when idle
+        idle: {
+          title: "Rozprávaj sa s AI",
+          subtitle: "",
+          color: "#2563eb",
+          icon: null
+        },
+        // styling when connecting
+        loading: {
+          title: "Pripájam...",
+          color: "#888888",
+          icon: null
+        },
+        // styling when call is active
+        active: {
+          title: "Hovor aktívny",
+          color: "#ef4444",
+          icon: null
+        }
+      }
+    };
+
+    (function(d, t) {
+      var g = document.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.src = "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
+      g.defer = true;
+      g.async = true;
+      s.parentNode.insertBefore(g, s);
+
+      g.onload = function() {
+        vapiInstance = window.vapiSDK.run({
+          apiKey: apiKey,
+          assistant: assistant,
+          config: buttonConfig
+        });
+
+        // Optional: event listeners
+        vapiInstance.on('call-start', () => console.log('Hlasový hovor začal'));
+        vapiInstance.on('call-end', () => console.log('Hlasový hovor skončil'));
+        vapiInstance.on('message', (msg) => console.log('Správa:', msg));
+        vapiInstance.on('error', (err) => {
+          console.error('Widget error:', err);
+          alert('Nastala chyba pri hlasovom widgete: ' + err.message);
+        });
+      };
+    })(document, "script");
+  </script>
+
+</body>
+</html>
